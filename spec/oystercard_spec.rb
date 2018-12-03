@@ -32,8 +32,8 @@ describe Oystercard do
   end
 
   context 'journey'do
-    it 'responds to #touch_in' do
-      expect(subject).to respond_to(:touch_in)
+    it 'expects subject to initialise as in use' do
+      expect(subject).not_to be_in_journey
     end
 
     it '#touch_in makes #in_journey true' do
