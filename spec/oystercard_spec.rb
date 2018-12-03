@@ -1,5 +1,9 @@
-#require './lib/oystercard'
+require './lib/oystercard'
 
-decribe Oystercard do
+describe Oystercard do
+
+  it "has a balance" do
+    expect(Oystercard.new).to respond_to(:balance)
+  end
 
 end
