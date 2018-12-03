@@ -16,7 +16,7 @@ describe Oystercard do
    expect { subject.top_up(10) }.to change { subject.balance }. by 10
   end
 
-  
+
   it 'raises an error if the maximum balance is exceeded' do
     maximum_balance = Oystercard::MAXIMUM_BALANCE
     subject.top_up(maximum_balance)
@@ -31,4 +31,18 @@ describe Oystercard do
     expect { subject.deduct(10) }.to change { subject.balance }. by -10
   end
 
+  context 'journey'do
+    it 'responds to #touch_in' do
+      expect(subject).to respond_to(:touch_in)
+    end
+
+    it '#touch_in makes #in_journey true' do
+      expect{ subject.touch_in }.to change { subject.in_journey? }.to eq true
+    end
+
+    it '#touch_out makes #in_journey false' do
+      subject.touch_in
+      expect{ subject.touch_out }.to change { subject.in_journey? }.to eq false
+    end
+  end
 end
