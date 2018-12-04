@@ -1,4 +1,4 @@
-require './lib/oystercard'
+require 'oystercard'
 
 describe Oystercard do
   let(:min_balance) {Oystercard::MIN_BALANCE}
@@ -28,19 +28,9 @@ describe Oystercard do
     end
   end
 
-  context '#deduct' do
-
-    it 'responds to #deduct' do
-      expect(subject).to respond_to(:deduct).with(1).argument
-    end
-
-    it '#deduct reduces balance' do
-      expect { subject.deduct(10) }.to change { subject.balance }.by -10
-    end
-  end
-
   context 'journey' do
     let(:oyster) { Oystercard.new }
+    let(:station) { double :station }
 
     it 'expects subject to initialise as not in use' do
       expect(subject).not_to be_in_journey
@@ -48,12 +38,12 @@ describe Oystercard do
 
     it 'requires a minimum balance to touch in' do
       message = "Minimum journey balance required"
-      expect { subject.touch_in }.to raise_error message
+      expect { subject.touch_in(station) }.to raise_error message
     end
 
     it '#touch_in makes #in_journey true' do
       oyster.top_up(min_balance)
-      oyster.touch_in
+      oyster.touch_in(station)
       expect(oyster).to be_in_journey
     end
 
@@ -65,6 +55,12 @@ describe Oystercard do
 
     it '#touch_out charges oyster' do
       expect{ subject.touch_out }.to change{ subject.balance }.by(-min_fare)
+    end
+
+    it 'oyster remembers station after #touch_in' do
+      subject.top_up(min_balance)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq [station]
     end
   end
 end
