@@ -31,36 +31,51 @@ describe Oystercard do
   context 'journey' do
     let(:oyster) { Oystercard.new }
     let(:station) { double :station }
+    context 'journey combos' do
 
-    it 'expects subject to initialise as not in use' do
-      expect(subject).not_to be_in_journey
+      it 'expects subject to initialise as not in use' do
+        expect(oyster).not_to be_in_journey
+      end
+
+      it '#touch_in and #touch_out creates one journey' do
+        oyster.top_up(5)
+        oyster.touch_in(station)
+        oyster.touch_out(station)
+        expect(oyster.journey_history).to eql([{station => station}])
+      end
     end
 
-    it 'requires a minimum balance to touch in' do
-      message = "Minimum journey balance required"
-      expect { subject.touch_in(station) }.to raise_error message
+    context '#touch_in' do
+
+      it '#touch_in makes #in_journey true' do
+        oyster.top_up(min_balance)
+        oyster.touch_in(station)
+        expect(oyster).to be_in_journey
+      end
+
+      it 'requires a minimum balance to touch in' do
+        message = "Minimum journey balance required"
+        expect { subject.touch_in(station) }.to raise_error message
+      end
+
+      it 'oyster remembers station after #touch_in' do
+        oyster.top_up(min_balance)
+        oyster.touch_in(station)
+        expect(oyster.entry_station).to eq [station]
+      end
     end
 
-    it '#touch_in makes #in_journey true' do
-      oyster.top_up(min_balance)
-      oyster.touch_in(station)
-      expect(oyster).to be_in_journey
-    end
+    context '#touch_out' do
 
-    it '#touch_out makes #in_journey false' do
-      allow(subject).to receive(:touch_in).and_return(true)
-      subject.touch_out
-      expect(subject).not_to be_in_journey
-    end
+      it '#touch_out makes #in_journey false' do
+        allow(oyster).to receive(:touch_in).and_return(true)
+        oyster.touch_out(station)
+        expect(oyster).not_to be_in_journey
+      end
 
-    it '#touch_out charges oyster' do
-      expect{ subject.touch_out }.to change{ subject.balance }.by(-min_fare)
-    end
-
-    it 'oyster remembers station after #touch_in' do
-      subject.top_up(min_balance)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq [station]
+      it '#touch_out charges oyster' do
+        expect{ oyster.touch_out(station) }.to change{ oyster.balance }.by(-min_fare)
+      end
     end
   end
 end
