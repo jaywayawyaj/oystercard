@@ -2,10 +2,14 @@ require './lib/oystercard'
 
 describe Oystercard do
 
-  context 'balance and #top_up' do
+  context '#balance' do
+
     it "has a balance of zero" do
      expect(subject.balance).to eq(0)
     end
+  end
+
+  context '#top_up' do
 
     it "the balance can be topped up" do
      expect(subject).to respond_to(:top_up).with(1).argument
@@ -23,6 +27,7 @@ describe Oystercard do
   end
 
   context '#deduct' do
+
     it 'responds to #deduct' do
       expect(subject).to respond_to(:deduct).with(1).argument
     end
@@ -33,6 +38,7 @@ describe Oystercard do
   end
 
   context 'journey' do
+
     let(:oyster) { Oystercard.new }
     it 'expects subject to initialise as not in use' do
       expect(subject).not_to be_in_journey
