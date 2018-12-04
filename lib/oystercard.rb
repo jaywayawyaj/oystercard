@@ -11,10 +11,6 @@ class Oystercard
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def touch_in
     raise "Minimum journey balance required" unless @balance >= MIN_BALANCE
     @in_use = true
@@ -26,15 +22,21 @@ class Oystercard
 
   def touch_out
     @in_use = false
+    deduct(MIN_FARE)
   end
 
   private
 
- def max_limit?(amount)
-   amount + balance > MAX_BALANCE
- end
+  def deduct(amount)
+    @balance -= amount
+  end
 
- MAX_BALANCE = 90
- MIN_BALANCE = 1
+  def max_limit?(amount)
+    amount + balance > MAX_BALANCE
+  end
+
+  MAX_BALANCE = 90
+  MIN_BALANCE = 1
+  MIN_FARE = 2
 
 end

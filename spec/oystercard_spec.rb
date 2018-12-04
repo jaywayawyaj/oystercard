@@ -1,6 +1,9 @@
 require './lib/oystercard'
 
 describe Oystercard do
+  let(:min_balance) {Oystercard::MIN_BALANCE}
+  let(:max_balance) {Oystercard::MAX_BALANCE}
+  let(:min_fare) {Oystercard::MIN_FARE}
 
   context '#balance' do
 
@@ -16,13 +19,12 @@ describe Oystercard do
     end
 
     it "balance increased with #top_up" do
-     expect { subject.top_up(10) }.to change { subject.balance }. by 10
+     expect { subject.top_up(10) }.to change { subject.balance }.by 10
     end
 
     it 'raises an error if the maximum balance is exceeded' do
-      maximum_balance = Oystercard::MAX_BALANCE
-      subject.top_up(maximum_balance)
-      expect{ subject.top_up 1 }.to raise_error "£#{maximum_balance} maximum balance exceeded."
+      subject.top_up(max_balance)
+      expect{ subject.top_up 1 }.to raise_error "£#{max_balance} maximum balance exceeded."
     end
   end
 
@@ -33,13 +35,13 @@ describe Oystercard do
     end
 
     it '#deduct reduces balance' do
-      expect { subject.deduct(10) }.to change { subject.balance }. by -10
+      expect { subject.deduct(10) }.to change { subject.balance }.by -10
     end
   end
 
   context 'journey' do
-
     let(:oyster) { Oystercard.new }
+
     it 'expects subject to initialise as not in use' do
       expect(subject).not_to be_in_journey
     end
@@ -50,7 +52,7 @@ describe Oystercard do
     end
 
     it '#touch_in makes #in_journey true' do
-      oyster.top_up(Oystercard::MIN_BALANCE)
+      oyster.top_up(min_balance)
       oyster.touch_in
       expect(oyster).to be_in_journey
     end
@@ -59,6 +61,10 @@ describe Oystercard do
       allow(subject).to receive(:touch_in).and_return(true)
       subject.touch_out
       expect(subject).not_to be_in_journey
+    end
+
+    it '#touch_out charges oyster' do
+      expect{ subject.touch_out }.to change{ subject.balance }.by(-min_fare)
     end
   end
 end
