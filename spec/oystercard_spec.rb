@@ -31,6 +31,7 @@ describe Oystercard do
   context 'journey' do
     let(:oyster) { Oystercard.new }
     let(:station) { double :station }
+    let(:station_out) { double :station_out}
     context 'journey combos' do
 
       it 'expects subject to initialise as not in use' do
@@ -40,8 +41,8 @@ describe Oystercard do
       it '#touch_in and #touch_out creates one journey' do
         oyster.top_up(5)
         oyster.touch_in(station)
-        oyster.touch_out(station)
-        expect(oyster.journey_history).to eql([{station => station}])
+        oyster.touch_out(station_out)
+        expect(oyster.journey_history).to eql([{station => station_out}])
       end
     end
 
