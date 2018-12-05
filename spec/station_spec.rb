@@ -2,11 +2,11 @@
 #
 # decribe 'Station' do
 #
-#   xit 'initializes with custom station' do
+#   it 'initializes with custom station' do
 #     expect(name).to eql(zone)
 #   end
 #
-#   xit 'initializes with custom zone' do
+#   it 'initializes with custom zone' do
 #     expect(name).to eql(zone)
 #   end
 # end

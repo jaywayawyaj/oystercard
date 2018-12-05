@@ -13,7 +13,7 @@ class Oystercard
   end
 
   def touch_in(station)
-    raise "Minimum journey balance required" unless @balance >= MIN_BALANCE
+    raise "Minimum journey balance required" unless min_balance?
     entry_station << station
   end
 
@@ -30,6 +30,10 @@ class Oystercard
 
   def deduct(amount)
     @balance -= amount
+  end
+
+  def min_balance?
+    @balance >= MIN_BALANCE
   end
 
   def max_limit?(amount)
