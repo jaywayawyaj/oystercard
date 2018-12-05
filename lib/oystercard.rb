@@ -23,7 +23,7 @@ class Oystercard
 
   def touch_out(exit_station)
     deduct(MIN_FARE)
-    @journey_history.store(@entry_station.pop, exit_station)
+    @journey_history.store(entry_station.pop, exit_station)
   end
 
   private
