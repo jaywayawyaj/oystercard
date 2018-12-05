@@ -4,7 +4,7 @@ class Oystercard
   def initialize
     @balance = 0
     @entry_station = []
-    @journey_history = []
+    @journey_history = {}
   end
 
   def top_up(amount)
@@ -23,7 +23,7 @@ class Oystercard
 
   def touch_out(exit_station)
     deduct(MIN_FARE)
-    @journey_history << {@entry_station.pop => exit_station}
+    @journey_history.store(@entry_station.pop, exit_station)
   end
 
   private

@@ -42,7 +42,7 @@ describe Oystercard do
         oyster.top_up(5)
         oyster.touch_in(station)
         oyster.touch_out(station_out)
-        expect(oyster.journey_history).to eql([{station => station_out}])
+        expect(oyster.journey_history).to eql({station => station_out})
       end
     end
 
