@@ -1,7 +1,7 @@
 require_relative 'journey'
 
 class Oystercard
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :journey
 
   def initialize
     @journey = Journey.new
@@ -14,6 +14,7 @@ class Oystercard
   end
 
   def touch_in(station)
+    #@journey.complete?(in) ? 
     raise "Minimum journey balance required" unless min_balance?
     @journey.start(station)
   end
