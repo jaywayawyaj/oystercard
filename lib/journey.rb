@@ -12,7 +12,7 @@ class Journey
   end
 
   def in_journey?
-    entry_station.any?
+    @entry_station.any?
   end
 
   def finish(station)

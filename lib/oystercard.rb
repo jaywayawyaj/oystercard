@@ -1,7 +1,7 @@
-require 'journey'
+require_relative 'journey'
 
 class Oystercard
-  attr_reader :balance, :entry_station, :journey_history
+  attr_reader :balance, :entry_station
 
   def initialize
     @journey = Journey.new
@@ -19,8 +19,8 @@ class Oystercard
   end
 
   def touch_out(exit_station)
-    @journey.finish(exit_station)
     deduct(MIN_FARE)
+    @journey.finish(exit_station)
   end
 
   private

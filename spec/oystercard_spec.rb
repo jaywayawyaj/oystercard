@@ -42,7 +42,7 @@ describe Oystercard do
 
     context '#touch_out' do
 
-      it '#touch_out charges oyster' do
+      it '#touch_out charges oyster minimum fare' do
         expect{ oyster.touch_out(station) }.to change{ oyster.balance }.by(-min_fare)
       end
     end
