@@ -31,50 +31,20 @@ describe Oystercard do
   context 'journey' do
     let(:oyster) { Oystercard.new }
     let(:station) { double :station }
-    let(:station_out) { double :station_out}
-    context 'journey combos' do
-
-      it 'expects subject to initialise as not in use' do
-        expect(oyster).not_to be_in_journey
-      end
-
-      it '#touch_in and #touch_out creates one journey' do
-        oyster.top_up(5)
-        oyster.touch_in(station)
-        oyster.touch_out(station_out)
-        expect(oyster.journey_history).to eql({station => station_out})
-      end
-    end
 
     context '#touch_in' do
-
-      it '#touch_in makes #in_journey true' do
-        oyster.top_up(min_balance)
-        oyster.touch_in(station)
-        expect(oyster).to be_in_journey
-      end
 
       it 'requires a minimum balance to touch in' do
         message = "Minimum journey balance required"
         expect { subject.touch_in(station) }.to raise_error message
       end
-
-      it 'oyster remembers station after #touch_in' do
-        oyster.top_up(min_balance)
-        oyster.touch_in(station)
-        expect(oyster.entry_station).to eq [station]
-      end
     end
 
     context '#touch_out' do
 
-      it '#touch_out makes #in_journey false' do
-        allow(oyster).to receive(:touch_in).and_return(true)
-        oyster.touch_out(station)
-        expect(oyster).not_to be_in_journey
-      end
-
       it '#touch_out charges oyster' do
+        journey = double(:journey)
+        allow(oyster).to receive(:journey).and_return(nil)
         expect{ oyster.touch_out(station) }.to change{ oyster.balance }.by(-min_fare)
       end
     end

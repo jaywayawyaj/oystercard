@@ -3,8 +3,6 @@ class Oystercard
 
   def initialize
     @balance = 0
-    @entry_station = []
-    @journey_history = {}
   end
 
   def top_up(amount)
@@ -14,16 +12,12 @@ class Oystercard
 
   def touch_in(station)
     raise "Minimum journey balance required" unless min_balance?
-    entry_station << station
-  end
-
-  def in_journey?
-    entry_station.any?
+    start(station)
   end
 
   def touch_out(exit_station)
     deduct(MIN_FARE)
-    @journey_history.store(entry_station.pop, exit_station)
+    finish(exit_station)
   end
 
   private
