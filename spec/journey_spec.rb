@@ -4,7 +4,7 @@ describe Journey do
   let(:oyster) { double :oyster, balance: 10 }
   let(:station) { double :station }
   let(:station_out) { double :station_out }
-  let(:journey) { Journey.new(oyster) }
+  let(:journey) { Journey.new }
 
   context 'journey combos' do
     it 'expects subject to initialise as not in use' do

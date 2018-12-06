@@ -43,8 +43,6 @@ describe Oystercard do
     context '#touch_out' do
 
       it '#touch_out charges oyster' do
-        journey = double(:journey)
-        allow(oyster).to receive(:journey).and_return(nil)
         expect{ oyster.touch_out(station) }.to change{ oyster.balance }.by(-min_fare)
       end
     end

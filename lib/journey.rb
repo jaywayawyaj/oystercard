@@ -2,10 +2,9 @@ class Journey
 
   attr_reader :entry_station, :journey_history
 
-  def initialize(oyster=Oystercard.new)
+  def initialize
     @entry_station = []
     @journey_history = {}
-    @oyster = oyster
   end
 
   def start(station)
