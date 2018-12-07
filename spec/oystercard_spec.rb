@@ -1,9 +1,9 @@
 require 'oystercard'
 
 describe Oystercard do
-  let(:min_balance) {Oystercard::MIN_BALANCE}
-  let(:max_balance) {Oystercard::MAX_BALANCE}
-  let(:min_fare) {Oystercard::MIN_FARE}
+  let(:min_balance) { Oystercard::MIN_BALANCE }
+  let(:max_balance) { Oystercard::MAX_BALANCE }
+  let(:min_fare) { 2 }
 
   context '#balance' do
 
@@ -45,6 +45,12 @@ describe Oystercard do
       it '#touch_out charges oyster minimum fare' do
         expect{ oyster.touch_out(station) }.to change{ oyster.balance }.by(-min_fare)
       end
+    end
+
+    it "deducts penalty fare if two touch in's with no exit" do
+      fare = double(:fare)
+      oyster.top_up(20)
+      expect { 2.times { oyster.touch_in(station) } }.to change { oyster.balance }.by -6
     end
   end
 end

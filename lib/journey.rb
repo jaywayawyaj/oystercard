@@ -1,34 +1,40 @@
 class Journey
 
-  attr_reader :entry_station, :journey_history
+  attr_reader :entry_station, :exit_station, :journey_history
 
   MIN_FARE = 2
   PENALTY_FARE = 6
 
   def initialize
-    @entry_station = []
-    @exit_station = []
-    @journey_history = {}
+    @entry_station = nil
+    @exit_station = nil
+    @journey_history = []
   end
 
   def start(station)
-    @entry_station << station
+    @entry_station = station
   end
 
   def in_journey?
-    @entry_station.any?
+    @entry_station != nil
   end
 
   def finish(station)
+    @exit_station = station
+    journey_log
+  end
 
-    @journey_history.store(entry_station.pop, station)
+  def journey_log
+    journey_history << {@entry_station => @exit_station}
   end
 
   def fare
-    journey_complete? ? MIN_FARE : PENALTY_FARE
+    PENALTY_FARE unless complete?
+    MIN_FARE
   end
 
-  def journey_complete?
+  def complete?
+    entry_station.nil? && exit_station.nil?
   end
 
 end
